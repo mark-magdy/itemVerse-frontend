@@ -101,7 +101,7 @@ const TeamSection = () => {
   return (
     <section className="py-12">
       <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold">Leadership team</h2>
+        <h2 className="text-3xl font-bold" style={{ color: "#7C3AED" }}>Leadership team</h2>
         <p className="text-muted-foreground mt-2">We're building the future of software development.</p>
       </div>
 
