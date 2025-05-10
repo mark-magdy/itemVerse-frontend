@@ -69,7 +69,7 @@ const ListingsTable = ({ listings }: ListingsTableProps) => {
                 </Badge>
               </TableCell>
               <TableCell>{listing.views}</TableCell>
-              <TableCell>{listing.created}</TableCell>
+              <TableCell>{listing.dateCreated}</TableCell>
               <TableCell>
                 <div className="flex space-x-1">
                   <Button variant="ghost" size="icon">
