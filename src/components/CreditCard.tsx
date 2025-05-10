@@ -100,7 +100,7 @@ const PaymentMethod = () => {
               <h3 className="text-lg font-semibold">Choose Payment Method</h3>
               <button
                 onClick={() => navigate("/cash-payment")}
-                className="w-full bg-green-500 text-white py-2 rounded-lg"
+                className="w-full [background-color:#7C3AED] text-white py-2 rounded-lg"
               >
                 Cash
               </button>
