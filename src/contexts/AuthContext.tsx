@@ -1,6 +1,8 @@
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { createUser } from "../api/user";
+import { createUser , loginUser } from "../api/user";
+// import {  } from "../api/user";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   id: string;
@@ -30,24 +32,37 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
 
   // Mock authentication functions - these would connect to your backend in a real app
-  const login = async (email: string, password: string): Promise<boolean> => {
-    // This is a mock implementation. Replace with actual API calls.
-    try {
-      console.log("Login attempt with:", email, password);
-      
-      // Mock successful login with user id 1
-      setUser({
-        id: "1",
-        name: "John Doe",
-        email: email,
-      });
-      localStorage.setItem("UserId", "1"); // Store user ID in local storage
-      return true;
-    } catch (error) {
-      console.error("Login error:", error);
+const login = async (email: string, password: string): Promise<boolean> => {
+  try {
+    console.log("Login ahhttempt with:", email, password);
+
+    const response = await loginUser({ email, password });
+    console.log("Login response:", response);
+    if (response.status !== 200) {
+      console.error("Login failed with status:", response.status);
       return false;
     }
-  };
+    // const response = await loginUser({email, password });
+    console.log("Login attempt with:", email, password);  
+    const userData = response.data;
+
+    // Store in state
+    setUser({
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+    });
+
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("UserId", userData.id); 
+
+    return true;
+  } catch (error: any) {
+    console.error("Login error:", error.response?.data?.message || error.message);
+    return false;
+  }
+  return true ; 
+};
 
 const register = async (name: string, email: string, password: string): Promise<boolean> => {
   try {

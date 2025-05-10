@@ -17,7 +17,7 @@ import Cart from "./pages/Cart";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Sell from "./pages/Sell";
-
+import About from "./pages/About";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +33,7 @@ const App = () => (
             <main>
               <Routes>
                 <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/items" element={<Items />} />
                 <Route path="/items/:id" element={<ItemDetail />} />
                 <Route path="/login" element={<Login />} />
