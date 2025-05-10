@@ -23,7 +23,7 @@ const useFetchItems = (): UseFetchItemsResult => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-
+  console.log("enter useFetchItems"); 
   useEffect(() => {
     const getItems = async () => {
       try {

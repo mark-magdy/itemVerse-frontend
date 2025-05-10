@@ -19,16 +19,21 @@ const Index = () => {
     { name: "Books", icon: "📚", link: "/items?category=books" },
     { name: "Collectibles", icon: "🏆", link: "/items?category=collectibles" },
   ];
-  useEffect(() => {
-    // This is where you can fetch data or perform side effects
-    console.log("Index component mounted");
-    if (localStorage.getItem("allItems") === null) {
-      console.log("No items found in localStorage, fetching items...");
-      localStorage.setItem("allItems", JSON.stringify(useFetchItems())); 
-    }else{
-      console.log("Items found in localStorage", localStorage.getItem("allItems"));
-    }
-  },[]);
+//  useEffect(() => {
+//     const fetchItems = async () => {
+//       console.log("Index component mounted");
+//       if (sessionStorage.getItem("allItems") === null) {
+//         console.log("No items found in localStorage, fetching items...");
+//         const items = await useFetchItems();
+//         sessionStorage.setItem("allItems", JSON.stringify(items));
+//         console.log(items); 
+//       } else {
+//         console.log("Items found in localStorage", sessionStorage.getItem("allItems"));
+//       }
+//     };
+
+//     fetchItems();
+//   }, []);
   return (
     <div className="min-h-screen">
       {/* Hero Section */}

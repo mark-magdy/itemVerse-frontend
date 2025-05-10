@@ -65,7 +65,7 @@ const ListingsTable = ({ listings }: ListingsTableProps) => {
               <TableCell>${listing.price.toFixed(2)}</TableCell>
               <TableCell>
                 <Badge variant={listing.status === "active" ? "default" : "secondary"}>
-                  {listing.status === "active" ? "Active" : "Sold"}
+                  {listing.status}
                 </Badge>
               </TableCell>
               <TableCell>{listing.views}</TableCell>

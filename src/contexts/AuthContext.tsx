@@ -44,7 +44,7 @@ const login = async (email: string, password: string): Promise<boolean> => {
     }
     // const response = await loginUser({email, password });
     console.log("Login attempt with:", email, password);  
-    const userData = response.data;
+    const userData = response.data.user;
 
     // Store in state
     setUser({
@@ -55,7 +55,7 @@ const login = async (email: string, password: string): Promise<boolean> => {
 
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("UserId", userData.id); 
-
+    localStorage.setItem ("authToken", response.data.token); 
     return true;
   } catch (error: any) {
     console.error("Login error:", error.response?.data?.message || error.message);
@@ -91,6 +91,7 @@ const register = async (name: string, email: string, password: string): Promise<
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("UserId");
+    localStorage.removeItem("authToken"); 
   };
 
   const value = {
