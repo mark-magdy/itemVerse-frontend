@@ -17,7 +17,7 @@ import Cart from "./pages/Cart";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Sell from "./pages/Sell";
-import About from "./pages/About";
+import About from "./pages/about";
 
 const queryClient = new QueryClient();
 
