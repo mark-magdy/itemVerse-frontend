@@ -227,6 +227,8 @@ const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
       ...data,
       price: Number(data.price),
       images: images.length > 0 ? images : undefined,
+      title: "",
+      category: ""
     };
     
     if (onSubmit) {
