@@ -22,7 +22,7 @@ interface Listing {
   status: string;
   image: string;
   views: number;
-  created: string;
+  dateCreated: string;
   description?: string;
   category?: string;
 }

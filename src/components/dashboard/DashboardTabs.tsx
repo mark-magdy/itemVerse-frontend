@@ -173,5 +173,4 @@ const purchaseHistory = [
     status: "delivered"
   }
 ];
-
 */

@@ -14,7 +14,6 @@ export const createItem = (item: any) => {
 };
 export const getUserItems = () => {
   const id = localStorage.getItem("UserId");
-  return []; 
   if (!id) throw new Error("UserId not found in localStorage");
   return api.get(`/item/${id}/items`);
 };

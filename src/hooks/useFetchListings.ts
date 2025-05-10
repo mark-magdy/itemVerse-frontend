@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUserItems } from "../api/item";
 import { getUserPurchases } from "../api/order";
-import { set } from "date-fns";
 
 interface ListingData {
   items: any[];      // you can replace `any` with a specific Item interface
@@ -26,14 +25,15 @@ const useFetchListings = (): ListingData => {
 
     const fetchData = async () => {
       try {
-        // const [itemsRes, purchasesRes] = await Promise.all([
-        //   getUserItems(),
-        //   getUserPurchases(),
-        // ]);
-        // setItems(itemsRes.data);
-        // setPurchases(purchasesRes.data);
-        const purchasesRes = await getUserPurchases();
+        const [itemsRes, purchasesRes] = await Promise.all([
+          getUserItems(),
+          getUserPurchases(),
+        ]);
+        setItems(itemsRes.data);
         setPurchases(purchasesRes.data);
+        console.log("from hook items" , itemsRes); 
+        console.log("from hook" , purchasesRes); 
+
       } catch (err: any) {
         console.error("Error fetching listings:", err);
         setError(err.message || "Failed to fetch listings");
