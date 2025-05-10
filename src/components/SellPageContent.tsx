@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { useMockData } from "../hooks/useMockData";
-
+import {createItem} from "../api/item";
 interface ListingData {
   title: string;
   description?: string;
@@ -187,7 +187,26 @@ const SellPageContent = () => {
     </div>
   );
 };
+interface SpecificationDTO {
+  label: string;
+  value: string;
+}
 
+interface ItemDTO {
+  id: number | null;
+  title: string;
+  sellerId: number;
+  sellerName: string;
+  sellerAvatar: string;
+  category: string;
+  price: number;
+  image: string;
+  quantity: number;
+  description: string;
+  rating: number;
+  status: string;
+  specifications: SpecificationDTO[];
+}
 interface ListingFormFullProps {
   onSubmit: (formData: ListingData) => void;
   listing?: {
@@ -201,47 +220,63 @@ interface ListingFormFullProps {
   };
 }
 
-const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
+export const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
   const [images, setImages] = useState<string[]>([]);
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
-  
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const sendToBackend = async (data:ItemDTO) => {
+     try {
+      const response = await createItem(data);
+      console.log("Success:", response.data);
+      alert("Item created successfully!");
+    } catch (error) {
+      console.error("Error creating item:", error);
+      alert("There was a problem creating the item.");
+    }
+  };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
     const formData = new FormData(e.target as HTMLFormElement);
-    const data: {[key: string]: any} = Object.fromEntries(formData.entries());
-    
-    // Basic validation
-    const newErrors: {[key: string]: string} = {};
+    const data = Object.fromEntries(formData.entries());
+
+    const newErrors: { [key: string]: string } = {};
     if (!data.title) newErrors.title = "Title is required";
-    if (!data.price || isNaN(Number(data.price)) || Number(data.price) <= 0) newErrors.price = "Valid price is required";
+    if (!data.price || isNaN(Number(data.price)) || Number(data.price) <= 0)
+      newErrors.price = "Valid price is required";
     if (!data.category) newErrors.category = "Category is required";
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    
-    // Add images to data and convert price to number
-    const listingData: ListingData = {
-      ...data,
-      price: Number(data.price),
-      images: images.length > 0 ? images : undefined,
+    const User =JSON.parse(localStorage.getItem("user"));
+    const itemDTO: ItemDTO = {
+      id: null,
+      title: data.title as string,
+      sellerId: Number( localStorage.getItem("userId") ) , 
+      sellerName: User.name, // TODO: Replace with real user name
+      sellerAvatar: User.avatar, // TODO: Replace with real avatar URL
+      category: data.category as string,
+      price: parseFloat(data.price as string),
+      image: "",
+      quantity: 1,
+      description: (data.description as string) || "",
+      rating: 0,
+      status: "available",
+      specifications: [
+        { label: "Condition", value: (data.condition as string) || "" },
+        { label: "Location", value: (data.location as string) || "" },
+        { label: "Shipping", value: (data.shipping as string) || "" },
+      ],
     };
-    
-    if (onSubmit) {
-      onSubmit(listingData);
-    }
+    sendToBackend (itemDTO); 
+    onSubmit?.(itemDTO);
   };
-  
-  // Mock photo upload handler
+
   const handlePhotoUpload = () => {
-    // Simulate file upload with mock images
     const mockImageUrls = [
-      "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-      "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+      "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&w=1170&q=80",
+      "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1170&q=80",
     ];
-    
     setImages([...images, ...mockImageUrls]);
   };
 
@@ -252,51 +287,51 @@ const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
           <Label htmlFor="title" className={errors.title ? "text-destructive" : ""}>
             Item Title*
           </Label>
-          <Input 
-            id="title" 
+          <Input
+            id="title"
             name="title"
-            placeholder="What are you selling?" 
-            defaultValue={listing?.title || ""} 
+            placeholder="What are you selling?"
+            defaultValue={listing?.title || ""}
             className={errors.title ? "border-destructive" : ""}
           />
           {errors.title && <p className="text-xs text-destructive mt-1">{errors.title}</p>}
         </div>
-        
+
         <div>
           <Label htmlFor="description">Description</Label>
-          <textarea 
-            id="description" 
+          <textarea
+            id="description"
             name="description"
-            className="w-full min-h-[100px] rounded-md border border-input bg-background px-3 py-2 text-sm" 
-            placeholder="Describe your item in detail. Include condition, features, etc." 
+            className="w-full min-h-[100px] rounded-md border border-input bg-background px-3 py-2 text-sm"
+            placeholder="Describe your item in detail. Include condition, features, etc."
             defaultValue={listing?.description || ""}
           />
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="price" className={errors.price ? "text-destructive" : ""}>
               Price ($)*
             </Label>
-            <Input 
-              id="price" 
+            <Input
+              id="price"
               name="price"
-              type="number" 
-              placeholder="0.00" 
-              min="0" 
+              type="number"
+              placeholder="0.00"
+              min="0"
               step="0.01"
-              defaultValue={listing?.price || ""} 
+              defaultValue={listing?.price || ""}
               className={errors.price ? "border-destructive" : ""}
             />
             {errors.price && <p className="text-xs text-destructive mt-1">{errors.price}</p>}
           </div>
-          
+
           <div>
             <Label htmlFor="category" className={errors.category ? "text-destructive" : ""}>
               Category*
             </Label>
-            <select 
-              id="category" 
+            <select
+              id="category"
               name="category"
               className={`w-full rounded-md border ${errors.category ? "border-destructive" : "border-input"} bg-background px-3 py-2 text-sm h-10`}
               defaultValue={listing?.category || ""}
@@ -314,11 +349,11 @@ const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
             {errors.category && <p className="text-xs text-destructive mt-1">{errors.category}</p>}
           </div>
         </div>
-        
+
         <div>
           <Label htmlFor="condition">Condition</Label>
-          <select 
-            id="condition" 
+          <select
+            id="condition"
             name="condition"
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm h-10"
             defaultValue={listing?.condition || "used_good"}
@@ -330,7 +365,7 @@ const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
             <option value="used_fair">Used - Fair</option>
           </select>
         </div>
-        
+
         <div>
           <Label>Photos</Label>
           <div className="mt-2">
@@ -344,19 +379,15 @@ const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
               <span>Add Photos</span>
               <span className="text-xs text-gray-500 mt-1">Up to 5 photos</span>
             </Button>
-            
+
             {images.length > 0 && (
               <div className="grid grid-cols-5 gap-2 mt-3">
                 {images.map((img, index) => (
                   <div key={index} className="relative w-full h-24 rounded overflow-hidden">
-                    <img 
-                      src={img} 
-                      alt={`Upload ${index + 1}`} 
-                      className="w-full h-full object-cover" 
-                    />
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
+                    <img src={img} alt={`Upload ${index + 1}`} className="w-full h-full object-cover" />
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       className="absolute top-0 right-0 rounded-full bg-black/60 text-white h-6 w-6 p-1"
                       onClick={() => {
                         const newImages = [...images];
@@ -364,7 +395,9 @@ const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
                         setImages(newImages);
                       }}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                      </svg>
                     </Button>
                   </div>
                 ))}
@@ -372,22 +405,22 @@ const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
             )}
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="location">Location</Label>
-            <Input 
-              id="location" 
+            <Input
+              id="location"
               name="location"
-              placeholder="City, State" 
-              defaultValue={listing?.location || ""} 
+              placeholder="City, State"
+              defaultValue={listing?.location || ""}
             />
           </div>
-          
+
           <div>
             <Label htmlFor="shipping">Shipping Options</Label>
-            <select 
-              id="shipping" 
+            <select
+              id="shipping"
               name="shipping"
               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm h-10"
               defaultValue={listing?.shipping || "seller_paid"}
@@ -399,14 +432,12 @@ const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => {
           </div>
         </div>
       </div>
-      
+
       <div className="pt-2 flex justify-end space-x-2">
         <Button variant="outline" type="button">
           Cancel
         </Button>
-        <Button type="submit">
-          Create Listing
-        </Button>
+        <Button type="submit">Create Listing</Button>
       </div>
     </form>
   );

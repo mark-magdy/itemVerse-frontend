@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShoppingBag, ShoppingCart, User, Tag, Plus } from "lucide-react";
@@ -9,8 +8,101 @@ import ListingsTable from "./ListingsTable";
 import PurchaseHistory from "./PurchaseHistory";
 import ProfileEditForm from "./ProfileEditForm";
 import SellPageContent from "../SellPageContent";
+import useFetchListings from "../../hooks/useFetchListings";
+import { Card, CardContent } from "@/components/ui/card";
 
-// Mock data for user listings
+interface DashboardTabsProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  user: any;
+}
+
+const DashboardTabs = ({ activeTab, setActiveTab, user }: DashboardTabsProps) => {
+  const { items: userListings, purchases: purchaseHistory, loading, error } = useFetchListings();
+
+  console.log("userListings in DashboardTabs", userListings);
+  console.log("purchaseHistory in DashboardTabs", purchaseHistory);
+
+  return (
+    <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <TabsList className="mb-8">
+        <TabsTrigger value="listings" className="flex items-center">
+          <ShoppingBag className="h-4 w-4 mr-2" />
+          Your Listings
+        </TabsTrigger>
+        <TabsTrigger value="sell" className="flex items-center">
+          <Tag className="h-4 w-4 mr-2" />
+          Sell
+        </TabsTrigger>
+        <TabsTrigger value="purchases" className="flex items-center">
+          <ShoppingCart className="h-4 w-4 mr-2" />
+          Purchase History
+        </TabsTrigger>
+        <TabsTrigger value="profile" className="flex items-center">
+          <User className="h-4 w-4 mr-2" />
+          Profile
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="listings" className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold">Your Listings</h2>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Add New Listing
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[525px]">
+              <DialogHeader>
+                <DialogTitle>Create New Listing</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <ListingForm />
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : (
+          <ListingsTable listings={userListings} />
+        )}
+      </TabsContent>
+
+      <TabsContent value="sell" className="space-y-6">
+        <SellPageContent />
+      </TabsContent>
+
+      <TabsContent value="purchases" className="space-y-6">
+        <h2 className="text-xl font-bold">Purchase History</h2>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : (
+          <PurchaseHistory purchases={purchaseHistory} />
+        )}
+      </TabsContent>
+
+      <TabsContent value="profile" className="space-y-6">
+        <h2 className="text-xl font-bold">Your Profile</h2>
+        <Card>
+          <CardContent className="pt-6">
+            <ProfileEditForm user={user} />
+          </CardContent>
+        </Card>
+      </TabsContent>
+    </Tabs>
+  );
+};
+
+export default DashboardTabs;
+
+/*
 const userListings = [
   {
     id: "101",
@@ -82,79 +174,4 @@ const purchaseHistory = [
   }
 ];
 
-interface DashboardTabsProps {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
-  user: any;
-}
-
-const DashboardTabs = ({ activeTab, setActiveTab, user }: DashboardTabsProps) => {
-  return (
-    <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="mb-8">
-        <TabsTrigger value="listings" className="flex items-center">
-          <ShoppingBag className="h-4 w-4 mr-2" />
-          Your Listings
-        </TabsTrigger>
-        <TabsTrigger value="sell" className="flex items-center">
-          <Tag className="h-4 w-4 mr-2" />
-          Sell
-        </TabsTrigger>
-        <TabsTrigger value="purchases" className="flex items-center">
-          <ShoppingCart className="h-4 w-4 mr-2" />
-          Purchase History
-        </TabsTrigger>
-        <TabsTrigger value="profile" className="flex items-center">
-          <User className="h-4 w-4 mr-2" />
-          Profile
-        </TabsTrigger>
-      </TabsList>
-      
-      <TabsContent value="listings" className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-bold">Your Listings</h2>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Add New Listing
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[525px]">
-              <DialogHeader>
-                <DialogTitle>Create New Listing</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <ListingForm />
-              </div>
-            </DialogContent>
-          </Dialog>
-        </div>
-        
-        <ListingsTable listings={userListings} />
-      </TabsContent>
-
-      <TabsContent value="sell" className="space-y-6">
-        <SellPageContent />
-      </TabsContent>
-      
-      <TabsContent value="purchases" className="space-y-6">
-        <PurchaseHistory purchases={purchaseHistory} />
-      </TabsContent>
-      
-      <TabsContent value="profile" className="space-y-6">
-        <h2 className="text-xl font-bold">Your Profile</h2>
-        
-        <Card>
-          <CardContent className="pt-6">
-            <ProfileEditForm user={user} />
-          </CardContent>
-        </Card>
-      </TabsContent>
-    </Tabs>
-  );
-};
-
-import { Card, CardContent } from "@/components/ui/card";
-
-export default DashboardTabs;
+*/
