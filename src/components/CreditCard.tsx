@@ -116,7 +116,7 @@ const PaymentMethod = () => {
 
         {/* Other Payment Methods */}
         <button
-          className="w-full bg-blue-200 text-blue-800 rounded-full py-2 font-medium"
+          className="w-full bg-gradient-to-br from-purple-400 to-purple-700 text-white rounded-full py-2 font-medium"
           onClick={() => setShowModal(true)}
         >
           Other payment Methods
