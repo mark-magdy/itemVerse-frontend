@@ -17,8 +17,9 @@ import Cart from "./pages/Cart";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Sell from "./pages/Sell";
-import About from "./pages/about";
+import About from "./pages/About";
 import PaymentCreditCard from "./pages/PaymentCreditCard";
+import Congratulation from "./pages/Congratulation"
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
                 <Route path="/dashboard/sell" element={<Dashboard />} />
                 <Route path="/sell" element={<Sell />} />
                 <Route path="/payment-creditCard" element={<PaymentCreditCard />} />
+                 <Route path="/payment-success" element={<Congratulation />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
