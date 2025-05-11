@@ -32,7 +32,10 @@ const PaymentMethod = () => {
       };
 
       const orderCreated  = await createOrder(dto);
-      const res = await processPayment(orderCreated.data.id);
+      console.log(  "order created ", orderCreated ); 
+      console.log(orderCreated.data);  
+      // const res = await processPayment(orderCreated.data.id);
+      // console.log("res ",  res ) ; 
       clearCart(); // ✅ optional: clear cart after order success
       navigate("/payment-success");
     } catch (error) {

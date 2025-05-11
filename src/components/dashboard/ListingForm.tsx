@@ -76,7 +76,7 @@ const ListingForm = ({ listing, isEdit = false }: ListingFormProps) => {
         </div>
         
         <div>
-          <Label htmlFor="price">Price ($)</Label>
+          <Label htmlFor="price">Price (EGP)</Label>
           <Input 
             id="price" 
             type="number" 

@@ -269,7 +269,9 @@ export const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => 
       ],
     };
     sendToBackend (itemDTO); 
-    onSubmit?.(itemDTO);
+    console.log(itemDTO); 
+
+    // onSubmit?.(itemDTO);
   };
 
   const handlePhotoUpload = () => {
@@ -311,7 +313,7 @@ export const ListingFormFull = ({ onSubmit, listing }: ListingFormFullProps) => 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="price" className={errors.price ? "text-destructive" : ""}>
-              Price ($)*
+              Price (EGP)*
             </Label>
             <Input
               id="price"

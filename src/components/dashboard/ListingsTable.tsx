@@ -63,7 +63,7 @@ const ListingsTable = ({ listings }: ListingsTableProps) => {
                   <span>{listing.title}</span>
                 </div>
               </TableCell>
-              <TableCell>${listing.price.toFixed(2)}</TableCell>
+              <TableCell>{listing.price.toFixed(2)} EGP </TableCell>
               <TableCell>
                 <Badge variant={listing.status === "active" ? "default" : "secondary"}>
                   {listing.status}

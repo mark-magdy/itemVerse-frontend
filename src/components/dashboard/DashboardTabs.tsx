@@ -49,18 +49,18 @@ const DashboardTabs = ({ activeTab, setActiveTab, user }: DashboardTabsProps) =>
           <h2 className="text-xl font-bold">Your Listings</h2>
           <Dialog>
             <DialogTrigger asChild>
-              <Button>
+              {/* <Button>
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Listing
-              </Button>
+              </Button> */}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[525px]">
               <DialogHeader>
                 <DialogTitle>Create New Listing</DialogTitle>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
+              {/* <div className="grid gap-4 py-4">
                 <ListingForm />
-              </div>
+              </div> */}
             </DialogContent>
           </Dialog>
         </div>

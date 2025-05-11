@@ -11,7 +11,7 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("listings");
   const userStats = useFetchStats();
-  console.log("userStats in Dash", userStats);
+  console.log("user in Dash", user);
   if (!user) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">

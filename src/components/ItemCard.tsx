@@ -35,13 +35,13 @@ const ItemCard: React.FC<ItemCardProps> = ({
       <Link to={`/items/${id}`}>
         <div className="aspect-square overflow-hidden relative">
           <img 
-            src={image} 
+            src={image||"./images/item-def.png"} 
             alt={title} 
             className="object-cover w-full h-full transition-transform hover:scale-105" 
           />
           <div className="absolute top-2 right-2">
             <span className="bg-white text-marketplace-700 text-sm font-medium px-2 py-1 rounded-full">
-              ${price.toFixed(2)}
+              {price.toFixed(2)} EGP
             </span>
           </div>
         </div>

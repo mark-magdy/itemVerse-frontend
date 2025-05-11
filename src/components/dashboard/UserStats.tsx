@@ -56,11 +56,11 @@ const UserStats = ({ userStats, listingsCount = 0 }: UserStatsProps) => {
       
       <Card>
         <CardHeader className="pb-4">
-          <CardTitle className="text-sm text-gray-500">Total Purchases</CardTitle>
+          <CardTitle className="text-sm text-gray-500">Total Purchases Items</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center">
-            <span className="text-2xl font-bold">{userStats?.totalPurchases } EGP</span>
+            <span className="text-2xl font-bold">{userStats?.totalPurchases } Item(s) </span>
           </div>
         </CardContent>
       </Card>

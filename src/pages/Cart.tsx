@@ -103,22 +103,22 @@ const Cart = () => {
             <div className="space-y-3 mb-6">
               <div className="flex justify-between">
                 <span className="text-gray-600">Subtotal</span>
-                <span>${totalPrice.toFixed(2)}</span>
+                <span>{totalPrice.toFixed(2)} EGP</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Shipping</span>
-                <span>$0.00</span>
+                <span>0.00 EGP</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Tax</span>
-                <span>${(totalPrice * 0.1).toFixed(2)}</span>
+                <span>{(totalPrice * 0.1).toFixed(2)} EGP</span>
               </div>
             </div>
             
             <div className="border-t border-gray-200 pt-4 mb-6">
               <div className="flex justify-between font-semibold text-lg">
                 <span>Total</span>
-                <span>${(totalPrice + totalPrice * 0.1).toFixed(2)}</span>
+                <span>{(totalPrice + totalPrice * 0.1).toFixed(2)} EGP</span>
               </div>
             </div>
             
@@ -136,8 +136,8 @@ const Cart = () => {
               {/* Simple payment icons */}
               <div className="w-12 h-8 bg-blue-500 rounded text-white flex items-center justify-center text-xs">VISA</div>
               <div className="w-12 h-8 bg-red-500 rounded text-white flex items-center justify-center text-xs">MC</div>
-              <div className="w-12 h-8 bg-green-500 rounded text-white flex items-center justify-center text-xs">AMEX</div>
-              <div className="w-12 h-8 bg-yellow-500 rounded text-white flex items-center justify-center text-xs">PP</div>
+              <div className="w-12 h-8 bg-green-500 rounded text-white flex items-center justify-center text-xs">MEZA</div>
+              <div className="w-12 h-8 bg-yellow-500 rounded text-white flex items-center justify-center text-xs">TELDA</div>
             </div>
           </div>
         </div>
@@ -171,7 +171,7 @@ const CartItemRow = ({
         <Link to={`/items/${item.id}`}>
           <h3 className="font-medium text-lg hover:text-marketplace-600">{item.title}</h3>
         </Link>
-        <p className="text-marketplace-600 font-medium">${item.price.toFixed(2)}</p>
+        <p className="text-marketplace-600 font-medium">{item.price.toFixed(2)} EGP </p>
       </div>
       
       <div className="flex items-center space-x-2">

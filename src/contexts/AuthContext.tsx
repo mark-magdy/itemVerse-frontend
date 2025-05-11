@@ -1,8 +1,5 @@
-
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { createUser , loginUser } from "../api/user";
-// import {  } from "../api/user";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createUser, loginUser } from "../api/user";
 
 interface User {
   id: string;
@@ -31,71 +28,67 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  // Mock authentication functions - these would connect to your backend in a real app
-const login = async (email: string, password: string): Promise<boolean> => {
-  try {
-    console.log("Login ahhttempt with:", email, password);
+  // Load user from localStorage on mount
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.error("Error loading user from localStorage:", error);
+    }
+  }, []);
 
-    const response = await loginUser({ email, password });
-    console.log("Login response:", response);
-    if (response.status !== 200) {
-      console.error("Login failed with status:", response.status);
+  const login = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const response = await loginUser({ email, password });
+      if (response.status !== 200) return false;
+
+      const userData = response.data.user;
+      setUser({
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
+      });
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("userId", userData.id);
+      localStorage.setItem("authToken", response.data.token);
+
+      return true;
+    } catch (error: any) {
+      console.error("Login error:", error.response?.data?.message || error.message);
       return false;
     }
-    // const response = await loginUser({email, password });
-    console.log("Login attempt with:", email, password);  
-    const userData = response.data.user;
+  };
 
-    // Store in state
-    setUser({
-      id: userData.id,
-      name: userData.name,
-      email: userData.email,
-    });
+  const register = async (name: string, email: string, password: string): Promise<boolean> => {
+    try {
+      const response = await createUser({ name, email, password });
+      const createdUser = response.data;
 
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("userId", userData.id); 
-    localStorage.setItem("UserId", userData.id); 
+      setUser({
+        id: createdUser.id,
+        name: createdUser.name,
+        email: createdUser.email,
+      });
 
-    localStorage.setItem ("authToken", response.data.token); 
-    return true;
-  } catch (error: any) {
-    console.error("Login error:", error.response?.data?.message || error.message);
-    return false;
-  }
-  return true ; 
-};
-
-const register = async (name: string, email: string, password: string): Promise<boolean> => {
-  try {
-    console.log("Registration attempt with:", name, email, password);
-
-    const response = await createUser({ name, email, password });
-
-    const createdUser = response.data;
-
-    setUser({
-      id: createdUser.id,
-      name: createdUser.name,
-      email: createdUser.email,
-    });
-
-    localStorage.setItem("UserId", createdUser.id); 
-    localStorage.setItem("userId", createdUser.id); 
-    localStorage.setItem("user", JSON.stringify(createdUser)); 
-    return true;
-  } catch (error) {
-    console.error("Registration error:", error);
-    return false;
-  }
-};
+      localStorage.setItem("user", JSON.stringify(createdUser));
+      localStorage.setItem("userId", createdUser.id);
+      return true;
+    } catch (error) {
+      console.error("Registration error:", error);
+      return false;
+    }
+  };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+
     localStorage.removeItem("userId");
-    localStorage.removeItem("UserId");
-    localStorage.removeItem("authToken"); 
   };
 
   const value = {

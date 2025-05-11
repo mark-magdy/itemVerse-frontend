@@ -41,7 +41,7 @@ const Hero: React.FC = () => {
                 </div>
                 <div className="rounded-lg overflow-hidden shadow-lg">
                   <img
-                    src="https://images.unsplash.com/photo-1611930022073-84f3c373f6e2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    src="https://images.unsplash.com/photo-1544947950-fa07a98d237f"
                     alt="Sneakers"
                     className="w-full h-48 object-cover"
                   />
@@ -57,7 +57,7 @@ const Hero: React.FC = () => {
                 </div>
                 <div className="rounded-lg overflow-hidden shadow-lg transform translate-y-4">
                   <img
-                    src="https://images.unsplash.com/photo-1637634229768-0ef084e2b4a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                    src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853"
                     alt="Headphones"
                     className="w-full h-48 object-cover"
                   />

@@ -58,12 +58,12 @@ const PurchaseHistory = ({ purchases }: PurchaseHistoryProps) => {
                   <h3 className="font-medium">{item.title}</h3>
                   <p className="text-sm text-gray-500">Sold by: {item.seller}</p>
                 </div>
-                <div className="font-medium">${item.price.toFixed(2)}</div>
+                <div className="font-medium">{item.price.toFixed(2)} EGP</div>
               </div>
             ))}
             <div className="flex justify-end pt-4">
               <div className="font-bold">
-                Total: ${order.total.toFixed(2)}
+                Total: {order.total.toFixed(2)} EGP
               </div>
             </div>
           </CardContent>

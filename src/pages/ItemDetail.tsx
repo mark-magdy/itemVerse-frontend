@@ -53,12 +53,12 @@ const ItemDetail = () => {
   // if (loading) return <div>Loading...</div>;
   // if (error) return <div>Error: {error}</div>;
 
-  if (localStorage.getItem("allItems") === null) {
-      console.log("No items found in localStorage, fetching items...");
-      localStorage.setItem("allItems", JSON.stringify(useFetchItems())); 
-    }else{
-      console.log("Items found in localStorage", localStorage.getItem("allItems"));
-    }
+  // if (localStorage.getItem("allItems") === null) {
+  //     console.log("No items found in localStorage, fetching items...");
+  //     localStorage.setItem("allItems", JSON.stringify(useFetchItems())); 
+  //   }else{
+  //     console.log("Items found in localStorage", localStorage.getItem("allItems"));
+  //   }
 
   // console.log() )  ;
   const  items  = JSON.parse(localStorage.getItem("allItems")); // ✅ use returned state
@@ -109,7 +109,9 @@ const ItemDetail = () => {
         {/* Item Image */}
         <div className="aspect-square overflow-hidden rounded-lg shadow-lg">
           <img 
-            src={item.image} 
+            // src={item.image||"./images/item-def.png"} 
+            src={"../../public/images/item-def.png"} 
+            
             alt={item.title} 
             className="w-full h-full object-cover"
           />
