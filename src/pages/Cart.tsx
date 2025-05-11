@@ -1,33 +1,37 @@
 
-import React from "react";
+import React , {useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart, CartItem } from "../contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Trash, Plus, Minus, ArrowRight, ChevronLeft } from "lucide-react";
-
+import Modal from "@/components/ui/modal" ;
+import CreditCard from "@/components/CreditCard";
 const Cart = () => {
   const { items, removeItem, updateQuantity, clearCart, totalItems, totalPrice } = useCart();
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const handleCheckout = () => {
+    setModalOpen(true);
     // This would be replaced with a real checkout process
     toast({
       title: "Checkout process initiated",
       description: "This is just a demo. In a real app, you would be redirected to payment.",
     });
-    
+
+     
     // Simulate successful checkout
-    setTimeout(() => {
-      clearCart();
-      navigate("/");
-      toast({
-        title: "Purchase complete!",
-        description: "Thank you for your purchase!",
-      });
-    }, 2000);
+    // setTimeout(() => {
+    //   // clearCart();
+    //   // navigate("/");
+    //   toast({
+    //     title: "Purchase complete!",
+    //     description: "Thank you for your purchase!",
+    //   });
+    // }, 2000);
   };
   
   if (items.length === 0) {
@@ -88,7 +92,9 @@ const Cart = () => {
             </Button>
           </div>
         </div>
-        
+        <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <CreditCard />
+      </Modal>
         {/* Order Summary */}
         <div>
           <div className="bg-white rounded-lg shadow-sm p-6">

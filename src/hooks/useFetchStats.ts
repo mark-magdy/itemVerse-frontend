@@ -14,7 +14,7 @@ const useFetchStats = (): UserStats | null => {
   useEffect(() => {
     const getStats = async () => {
       try {
-        const id = localStorage.getItem("UserId");
+        const id = localStorage.getItem("userId");
         if (!id) throw new Error("UserId not found in localStorage");
 
         const response = await getAllStats(id);

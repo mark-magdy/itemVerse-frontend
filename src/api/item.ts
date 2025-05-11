@@ -10,10 +10,12 @@ export const getItemById = (id: string) => {
 };
 
 export const createItem = (item: any) => {
-  return api.post(`/item/add/${localStorage.getItem("UserId")}`, item);
+  return api.post(`/item/add/${localStorage.getItem("userId")}`, item);
 };
 export const getUserItems = () => {
-  const id = localStorage.getItem("UserId");
+  console.log("from inside"); 
+  const id = localStorage.getItem('userId');
+  console.log("id to get items:" , id) ; 
   if (!id) throw new Error("UserId not found in localStorage");
   return api.get(`/item/${id}/items`);
 };

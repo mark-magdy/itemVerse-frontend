@@ -35,6 +35,7 @@ const Items: React.FC = () => {
     const getItems = async () => {
       try {
         const data = await fetchItems();
+        console.log(data) ;
         setAllItems(data.data || []);
       } catch {
         setError("Failed to load items");

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useCart, CartItem } from "../contexts/CartContext";
+import {createOrder} from "@/api/order"
+import { processPayment } from "@/api/payment";
 const PaymentMethod = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -11,6 +13,33 @@ const PaymentMethod = () => {
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
 
+
+  const { items, clearCart } = useCart(); 
+
+   const handlePay = async () => {
+    try {
+      // Sample userId — replace with auth context later
+      const userId = Number(localStorage.getItem("userId")) ;
+
+      const itemIds = items.map((item) => Number(item.id)); // adjust to match backend
+      const orderDate = new Date().toISOString().split("T")[0];
+
+      const dto = {
+        userId,
+        itemIds,
+        status: "PENDING",
+        orderDate,
+      };
+
+      const orderCreated  = await createOrder(dto);
+      const res = await processPayment(orderCreated.data.id);
+      clearCart(); // ✅ optional: clear cart after order success
+      navigate("/payment-success");
+    } catch (error) {
+      console.error("Error creating order:", error);
+      alert("Failed to process payment.");
+    }
+  };
   return (
     <div className="flex items-center justify-center p-4 ">
       <div className="w-full max-w-sm bg-white rounded-xl p-6 shadow-lg space-y-4">
@@ -99,7 +128,7 @@ const PaymentMethod = () => {
             <div className="bg-white p-6 rounded-lg w-80 space-y-4 shadow-xl">
               <h3 className="text-lg font-semibold">Choose Payment Method</h3>
               <button
-                onClick={() => navigate("/cash-payment")}
+                onClick={() => navigate("/")}
                 className="w-full [background-color:#7C3AED] text-white py-2 rounded-lg"
               >
                 Cash
@@ -124,7 +153,7 @@ const PaymentMethod = () => {
         {/* Proceed Button */}
         <button
           className="w-full bg-blue-500 text-white py-2 rounded-full font-semibold"
-          onClick={() => navigate("/payment-success")}
+          onClick={handlePay}
         >
           Proceed Payment
         </button>

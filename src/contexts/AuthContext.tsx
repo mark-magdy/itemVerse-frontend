@@ -54,7 +54,9 @@ const login = async (email: string, password: string): Promise<boolean> => {
     });
 
     localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("userId", userData.id); 
     localStorage.setItem("UserId", userData.id); 
+
     localStorage.setItem ("authToken", response.data.token); 
     return true;
   } catch (error: any) {
@@ -79,6 +81,7 @@ const register = async (name: string, email: string, password: string): Promise<
     });
 
     localStorage.setItem("UserId", createdUser.id); 
+    localStorage.setItem("userId", createdUser.id); 
     localStorage.setItem("user", JSON.stringify(createdUser)); 
     return true;
   } catch (error) {
@@ -90,6 +93,7 @@ const register = async (name: string, email: string, password: string): Promise<
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("userId");
     localStorage.removeItem("UserId");
     localStorage.removeItem("authToken"); 
   };

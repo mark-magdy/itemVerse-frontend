@@ -16,7 +16,7 @@ const useFetchListings = (): ListingData => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const userId = localStorage.getItem("UserId");
+    const userId = localStorage.getItem("userId");
     if (!userId) {
       setError("User not logged in");
       setLoading(false);
