@@ -129,7 +129,7 @@ const PaymentMethod = () => {
               <h3 className="text-lg font-semibold">Choose Payment Method</h3>
               <button
                 onClick={() => navigate("/")}
-                className="w-full [background-color:#7C3AED] text-white py-2 rounded-lg"
+                className="w-full bg-gradient-to-br from-purple-400 to-purple-700 text-white py-2 rounded-lg"
               >
                 Cash
               </button>
@@ -152,7 +152,7 @@ const PaymentMethod = () => {
 
         {/* Proceed Button */}
         <button
-          className="w-full bg-blue-500 text-white py-2 rounded-full font-semibold"
+          className="w-full bg-gradient-to-br from-purple-400 to-purple-700 text-white py-2 rounded-full font-semibold"
           onClick={handlePay}
         >
           Proceed Payment
